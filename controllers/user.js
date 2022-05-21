@@ -1,5 +1,7 @@
 
 const User = require('../models/usersSchema');
+const { JWT } = require("../utils");
+const createError = require("http-errors");
 
 const registerUser = async ({ userName, userPassword, userEmail, userPhoneNumber }) => {
     if (await User.findOne({ email })) {
@@ -7,17 +9,15 @@ const registerUser = async ({ userName, userPassword, userEmail, userPhoneNumber
     }
 
     await new User({
-        name: userName,
-        password: userPassword,
-        email: userEmail,
-        phoneNumber: userPhoneNumber
+        name:userName,
+        email:userEmail,
+        password:userPassword,
     }).save();
 
-    return login(email, password);
+    return userLogin(email, password);
 };
 
-
-const userlogin = async (email, password) => {
+const userLogin = async (email, password) => {
     const user = await User.findOne({
         email,
         password,
@@ -34,4 +34,4 @@ const userlogin = async (email, password) => {
 };
 
 
-module.exports = { registerUser,userlogin };
+module.exports = { registerUser,userLogin };

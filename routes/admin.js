@@ -2,7 +2,7 @@
 
 const router = require("express").Router();
 const { register, login } = require("../controllers/auth");
-const { registerUser,userlogin } = require('../controllers/user')
+const { registerUser, userLogin } = require('../controllers/user')
 
 // just for checking 
 router.get('/',
@@ -55,11 +55,11 @@ router.post(
         try {
             const { email, password, userName, userPassword, userEmail, userPhoneNumber } = req.body;
             const data = await login(email, password);
-            if (data) {
-                const admin = await registerUser(req.body);
-                res.status(201).json(admin);
-                await registerUser(userName, userPassword, userEmail, userPhoneNumber);
-            }
+            console.log(userName, userPassword, userEmail, userPhoneNumber);
+
+            const user = await registerUser(userName, userPassword, userEmail, userPhoneNumber);
+            res.status(201).json(user);
+
         } catch (error) {
             res.status(400).json(error)
         }
@@ -67,12 +67,19 @@ router.post(
 );
 
 
+// "email": "anything@gmail.com",
+// "password": "1356",
+// "userName": "george",
+// "userPassword": "14569",
+// "userEmail": "george@gmail.com",
+// "userPhoneNumber": "1478523699"
+
 router.get(
     "/users/login",
     async (req, res, next) => {
         try {
             const { email, password } = req.body;
-            const data = await login(email, password);
+            const data = await userLogin(email, password);
             res.status(200).json(data);
         } catch (error) {
             res.status(400).json(error)

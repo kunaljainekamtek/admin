@@ -1,15 +1,15 @@
 
 const axios = require('axios');
-const User = require("../models/adminSchema");
+const Admin = require("../models/adminSchema");
 const { JWT } = require("../utils");
 const createError = require("http-errors");
 
 const register = async ({ name, email, password }) => {
-    if (await User.findOne({ email })) {
+    if (await Admin.findOne({ email })) {
         throw createError(409, "User already exists");
     }
 
-    await new User({
+    await new Admin({
         name,
         email,
         password,
@@ -19,7 +19,7 @@ const register = async ({ name, email, password }) => {
 };
 
 const login = async (email, password) => {
-    const user = await User.findOne({
+    const user = await Admin.findOne({
         email,
         password,
     });
